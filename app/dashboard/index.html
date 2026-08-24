@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAP Vendor Spend Intelligence - Governance & Risk Analysis</title>
+    <!-- Google Fonts: Inter & Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* SAP Fiori / Horizon Inspired Palette */
+            --sap-brand: #0a6ed1;
+            --sap-brand-dark: #0854a0;
+            --sap-brand-light: #eef5fc;
+            --sap-header-bg: linear-gradient(135deg, #0a6ed1 0%, #1b365d 100%);
+            --sap-bg: #f4f6f9;
+            --sap-card-bg: #ffffff;
+            --sap-text-primary: #1d2d3e;
+            --sap-text-secondary: #556b82;
+            --sap-text-muted: #8c9ba5;
+            --sap-border: #d9e1e8;
+            --sap-border-light: #edf2f7;
+            
+            /* Status Colors */
+            --status-active-bg: #e8f5e9;
+            --status-active-text: #2e7d32;
+            --status-active-border: #c8e6c9;
+
+            --status-blocked-bg: #ffebee;
+            --status-blocked-text: #c62828;
+            --status-blocked-border: #ffcdd2;
+
+            /* AI Confidence & Risk Colors */
+            --conf-high-bg: #fdeded;
+            --conf-high-text: #d32f2f;
+            --conf-high-border: #f5c6cb;
+            --conf-high-tint: #fff4f4;
+
+            --conf-med-bg: #fff3e0;
+            --conf-med-text: #e65100;
+            --conf-med-border: #ffe0b2;
+            --conf-med-tint: #fff9f0;
+
+            --conf-low-bg: #fffde7;
+            --conf-low-text: #f57f17;
+            --conf-low-border: #fff9c4;
+            --conf-low-tint: #fffff2;
+
+            /* Shadows & Border Radius */
+            --radius-s: 4px;
+            --radius-m: 8px;
+            --radius-l: 12px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--sap-bg);
+            color: var(--sap-text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header / ShellBar */
+        .shellbar {
+            background: var(--sap-header-bg);
+            color: #ffffff;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .shellbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .shellbar-logo {
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-m);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: -0.5px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .shellbar-title-group h1 {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+
+        .shellbar-title-group p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 400;
+        }
+
+        .shellbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: var(--radius-m);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+            user-select: none;
+        }
+
+        .btn-ai {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+            color: var(--sap-brand);
+            border-color: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-ai:hover:not(:disabled) {
+            background: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            color: #b71c1c;
+            border-color: #ffe0b2;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-warning:hover:not(:disabled) {
+            background: #ffe0b2;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Page Container */
+        .container {
+            max-width: 1320px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            flex: 1;
+        }
+
+        /* Metrics Bar */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .kpi-card {
+            background: var(--sap-card-bg);
+            border: 1px solid var(--sap-border);
+            border-radius: var(--radius-m);
+            padding: 16px 20px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .kpi-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .kpi-title {
+            font-size: 13px;
+            color: var(--sap-text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--sap-text-primary);
+            line-height: 1.1;
+        }
+
+        .kpi-sub {
+            font-size: 12px;
+            color: var(--sap-text-muted);
+        }
+
+        /* Section Cards */
+        .card {
+            background: var(--sap-card-bg);
+            border: 1px solid var(--sap-border);
+            border-radius: var(--radius-l);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--sap-border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #fafbfc;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--sap-text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        /* Loading Indicator */
+        .loading-banner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 32px;
+            background: var(--sap-brand-light);
+            border: 1px solid var(--sap-border);
+            border-radius: var(--radius-m);
+            color: var(--sap-brand);
+            font-weight: 600;
+        }
+
+        .spinner {
+            width: 28px;
+            height: 28px;
+            border: 3px solid rgba(10, 110, 209, 0.2);
+            border-top-color: var(--sap-brand);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Summary Boxes */
+        .summary-box {
+            background: #f0f7ff;
+            border-left: 4px solid var(--sap-brand);
+            padding: 16px 20px;
+            border-radius: 0 var(--radius-m) var(--radius-m) 0;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: var(--sap-text-primary);
+            line-height: 1.6;
+        }
+
+        .summary-box-warning {
+            background: #fff8f6;
+            border-left-color: #d32f2f;
+        }
+
+        .groups-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 16px;
+        }
+
+        .group-card {
+            border: 1px solid var(--sap-border);
+            border-radius: var(--radius-m);
+            padding: 18px;
+            background: #ffffff;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .group-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .group-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .group-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--sap-text-primary);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.2;
+            border: 1px solid transparent;
+        }
+
+        .badge-high {
+            background-color: var(--conf-high-bg);
+            color: var(--conf-high-text);
+            border-color: var(--conf-high-border);
+        }
+
+        .badge-medium {
+            background-color: var(--conf-med-bg);
+            color: var(--conf-med-text);
+            border-color: var(--conf-med-border);
+        }
+
+        .badge-low {
+            background-color: var(--conf-low-bg);
+            color: var(--conf-low-text);
+            border-color: var(--conf-low-border);
+        }
+
+        .badge-active {
+            background-color: var(--status-active-bg);
+            color: var(--status-active-text);
+            border-color: var(--status-active-border);
+        }
+
+        .badge-blocked {
+            background-color: var(--status-blocked-bg);
+            color: var(--status-blocked-text);
+            border-color: var(--status-blocked-border);
+        }
+
+        .badge-reason {
+            background-color: #f1f5f9;
+            color: #334155;
+            border-color: #cbd5e1;
+            font-size: 11px;
+        }
+
+        .supplier-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .supplier-pill {
+            background: #f1f5f9;
+            color: var(--sap-text-primary);
+            border: 1px solid var(--sap-border);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: monospace;
+        }
+
+        .similarity-reason {
+            font-size: 13px;
+            color: var(--sap-text-secondary);
+            background: #fafbfc;
+            padding: 10px 12px;
+            border-radius: var(--radius-s);
+            border: 1px solid var(--sap-border-light);
+            line-height: 1.4;
+        }
+
+        /* Filter Toolbar */
+        .table-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--sap-border-light);
+            margin-bottom: 16px;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 360px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 9px 12px 9px 36px;
+            font-size: 13px;
+            border: 1px solid var(--sap-border);
+            border-radius: var(--radius-m);
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-box input:focus {
+            border-color: var(--sap-brand);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--sap-text-muted);
+            font-size: 14px;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .select-input {
+            padding: 8px 12px;
+            font-size: 13px;
+            border: 1px solid var(--sap-border);
+            border-radius: var(--radius-m);
+            outline: none;
+            background-color: #ffffff;
+            color: var(--sap-text-primary);
+        }
+
+        /* Tables */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: var(--sap-text-secondary);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 12px 18px;
+            border-bottom: 2px solid var(--sap-border-light);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--sap-border-light);
+            color: var(--sap-text-primary);
+            vertical-align: middle;
+        }
+
+        tbody tr {
+            transition: background-color 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        /* Highlighting Duplicate Rows */
+        tbody tr.duplicate-row {
+            background-color: var(--conf-high-tint) !important;
+            border-left: 4px solid var(--conf-high-text);
+        }
+
+        tbody tr.duplicate-row-med {
+            background-color: var(--conf-med-tint) !important;
+            border-left: 4px solid var(--conf-med-text);
+        }
+
+        tbody tr.duplicate-row-low {
+            background-color: var(--conf-low-tint) !important;
+            border-left: 4px solid var(--conf-low-text);
+        }
+
+        .supplier-id-cell {
+            font-family: monospace;
+            font-weight: 600;
+            color: var(--sap-brand);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--sap-text-muted);
+            font-size: 14px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--sap-text-muted);
+            font-size: 12px;
+            border-top: 1px solid var(--sap-border);
+            background: #ffffff;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / ShellBar -->
+    <header class="shellbar">
+        <div class="shellbar-brand">
+            <div class="shellbar-logo">SAP</div>
+            <div class="shellbar-title-group">
+                <h1>Vendor Spend Intelligence</h1>
+                <p>Analyse IA des Doublons & Détection des Risques de Blocage</p>
+            </div>
+        </div>
+        <div class="shellbar-actions">
+            <button id="btnRefresh" class="btn btn-secondary" onclick="fetchSuppliers()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                Actualiser
+            </button>
+            <button id="btnCheckBlocked" class="btn btn-warning" onclick="detectBlockedVendorRisks()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                Check Blocked Vendors
+            </button>
+            <button id="btnAnalyze" class="btn btn-ai" onclick="analyzeVendorDuplicates()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                Analyze Duplicates with AI
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+
+        <!-- KPI Metrics Grid -->
+        <section class="kpi-grid">
+            <div class="kpi-card">
+                <span class="kpi-title">Fournisseurs Totaux</span>
+                <span id="kpiTotal" class="kpi-value">—</span>
+                <span class="kpi-sub">Connecté à S/4HANA Cloud</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-title">Fournisseurs Actifs</span>
+                <span id="kpiActive" class="kpi-value">—</span>
+                <span class="kpi-sub">Statut non bloqué</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-title">Fournisseurs Bloqués</span>
+                <span id="kpiBlocked" class="kpi-value">—</span>
+                <span class="kpi-sub">Achats/Paiements restreints</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-title">Groupes Doublons IA</span>
+                <span id="kpiDuplicates" class="kpi-value">—</span>
+                <span class="kpi-sub">Détectés par analyse Groq IA</span>
+            </div>
+        </section>
+
+        <!-- Blocked Vendors Risk Analysis Section (Direct Rule Filtering) -->
+        <section id="blockedSection" class="card" style="display: none;">
+            <div class="card-header">
+                <div class="card-title">
+                    <svg width="20" height="20" fill="none" stroke="#d32f2f" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    Analyse des Risques de Blocage Fournisseurs (Rule-Based Filtering)
+                </div>
+                <span id="blockedTimestamp" class="kpi-sub"></span>
+            </div>
+            <div class="card-body">
+                <!-- Loading State -->
+                <div id="blockedLoading" class="loading-banner" style="display: none; background: #fff8f6; color: #c62828;">
+                    <div class="spinner" style="border-top-color: #c62828;"></div>
+                    <span>Analyse des règles de blocage Achats/Comptabilité/Paiements sur les fournisseurs S/4HANA...</span>
+                </div>
+
+                <!-- Content -->
+                <div id="blockedContent" style="display: none;">
+                    <div id="blockedSummary" class="summary-box summary-box-warning"></div>
+                    
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Supplier ID</th>
+                                    <th>Nom du Fournisseur</th>
+                                    <th>Motifs de Blocage (Restrictions)</th>
+                                    <th>Niveau de Risque</th>
+                                </tr>
+                            </thead>
+                            <tbody id="blockedTableBody">
+                                <!-- Filled via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Duplicate Analysis Section -->
+        <section id="aiSection" class="card" style="display: none;">
+            <div class="card-header">
+                <div class="card-title">
+                    <svg width="20" height="20" fill="none" stroke="var(--sap-brand)" stroke-width="2" viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                    Résultats de l'Analyse IA des Doublons
+                </div>
+                <span id="aiTimestamp" class="kpi-sub"></span>
+            </div>
+            <div class="card-body">
+                <!-- Loading State -->
+                <div id="aiLoading" class="loading-banner" style="display: none;">
+                    <div class="spinner"></div>
+                    <span>Analyse des fournisseurs en cours via Groq AI... Recherche des incohérences et doublons Master Data.</span>
+                </div>
+
+                <!-- Analysis Content -->
+                <div id="aiContent" style="display: none;">
+                    <div id="aiSummary" class="summary-box"></div>
+                    <div id="aiGroupsGrid" class="groups-grid"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Suppliers Table Card -->
+        <section class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <svg width="20" height="20" fill="none" stroke="var(--sap-brand)" stroke-width="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    Liste des Fournisseurs
+                </div>
+                <span id="tableCount" class="kpi-sub">Chargement...</span>
+            </div>
+            <div class="card-body">
+                <!-- Filter Toolbar -->
+                <div class="table-toolbar">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" placeholder="Rechercher par Nom ou Supplier ID..." oninput="filterTable()">
+                    </div>
+                    <div class="filter-group">
+                        <label for="statusFilter" class="kpi-sub" style="font-weight:600;">Filtrer :</label>
+                        <select id="statusFilter" class="select-input" onchange="filterTable()">
+                            <option value="all">Tous les fournisseurs</option>
+                            <option value="active">Actifs uniquement</option>
+                            <option value="blocked">Bloqués uniquement</option>
+                            <option value="duplicates">Doublons identifiés uniquement</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Supplier ID</th>
+                                <th>Nom du Fournisseur</th>
+                                <th>Date de Création</th>
+                                <th>Statut Bloqué</th>
+                                <th>Détection Doublon</th>
+                            </tr>
+                        </thead>
+                        <tbody id="suppliersTableBody">
+                            <tr>
+                                <td colspan="5" class="empty-state">
+                                    <div class="spinner" style="margin: 0 auto 12px auto;"></div>
+                                    Chargement des fournisseurs S/4HANA...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        SAP Vendor Spend Intelligence &copy; 2026 — CAP S/4HANA Integration & Groq AI Governance
+    </footer>
+
+    <!-- Vanilla JavaScript -->
+    <script>
+        // Global Application State
+        const state = {
+            suppliers: [],
+            duplicateAnalysis: null,
+            blockedAnalysis: null,
+            duplicateMap: new Map(), // supplier_id -> { groupIndex, confidence, reason }
+            filterText: '',
+            filterStatus: 'all'
+        };
+
+        const isTruthy = (val) => val === true || val === 'X' || val === 'true' || val === 1 || val === '1';
+
+        // DOM Loaded Init
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchSuppliers();
+        });
+
+        // 1. Fetch Suppliers List from OData V4 Service
+        async function fetchSuppliers() {
+            const tbody = document.getElementById('suppliersTableBody');
+            const btnRefresh = document.getElementById('btnRefresh');
+            btnRefresh.disabled = true;
+
+            try {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="empty-state">
+                            <div class="spinner" style="margin: 0 auto 12px auto;"></div>
+                            Chargement des données fournisseurs depuis /odata/v4/vendor-service/Suppliers...
+                        </td>
+                    </tr>
+                `;
+
+                const response = await fetch('/odata/v4/vendor-service/Suppliers');
+                if (!response.ok) {
+                    throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                state.suppliers = data.value || [];
+
+                updateKPIs();
+                renderTable();
+
+            } catch (err) {
+                console.error('Error fetching suppliers:', err);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="empty-state" style="color: var(--conf-high-text);">
+                            ❌ Erreur lors du chargement des fournisseurs : ${escapeHtml(err.message)}
+                        </td>
+                    </tr>
+                `;
+            } finally {
+                btnRefresh.disabled = false;
+            }
+        }
+
+        // 2. Trigger AI Vendor Duplicate Analysis
+        async function analyzeVendorDuplicates() {
+            const btnAnalyze = document.getElementById('btnAnalyze');
+            const aiSection = document.getElementById('aiSection');
+            const aiLoading = document.getElementById('aiLoading');
+            const aiContent = document.getElementById('aiContent');
+
+            btnAnalyze.disabled = true;
+            aiSection.style.display = 'block';
+            aiLoading.style.display = 'flex';
+            aiContent.style.display = 'none';
+
+            aiSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            try {
+                const response = await fetch('/odata/v4/vendor-service/analyzeVendorDuplicates', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({})
+                });
+
+                if (!response.ok) {
+                    const errText = await response.text();
+                    throw new Error(`Erreur serveur (${response.status}) : ${errText}`);
+                }
+
+                const result = await response.json();
+                state.duplicateAnalysis = result;
+
+                state.duplicateMap.clear();
+                if (result.duplicate_groups && Array.isArray(result.duplicate_groups)) {
+                    result.duplicate_groups.forEach((group, groupIdx) => {
+                        if (group.supplier_ids && Array.isArray(group.supplier_ids)) {
+                            group.supplier_ids.forEach(id => {
+                                state.duplicateMap.set(String(id).trim(), {
+                                    groupIdx: groupIdx + 1,
+                                    confidence: group.confidence || 'Medium',
+                                    reason: group.similarity_reason || ''
+                                });
+                            });
+                        }
+                    });
+                }
+
+                renderAIResults(result);
+                updateKPIs();
+                renderTable();
+
+            } catch (err) {
+                console.error('Error running AI duplicate analysis:', err);
+                aiLoading.style.display = 'none';
+                aiContent.style.display = 'block';
+                document.getElementById('aiSummary').innerHTML = `
+                    <span style="color: var(--conf-high-text); font-weight:700;">❌ Échec de l'analyse IA :</span> ${escapeHtml(err.message)}
+                `;
+                document.getElementById('aiGroupsGrid').innerHTML = '';
+            } finally {
+                btnAnalyze.disabled = false;
+            }
+        }
+
+        // 3. Trigger Blocked Vendor Risk Analysis (Rule-based Action)
+        async function detectBlockedVendorRisks() {
+            const btnCheck = document.getElementById('btnCheckBlocked');
+            const blockedSection = document.getElementById('blockedSection');
+            const blockedLoading = document.getElementById('blockedLoading');
+            const blockedContent = document.getElementById('blockedContent');
+
+            btnCheck.disabled = true;
+            blockedSection.style.display = 'block';
+            blockedLoading.style.display = 'flex';
+            blockedContent.style.display = 'none';
+
+            blockedSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            try {
+                const response = await fetch('/odata/v4/vendor-service/detectBlockedVendorRisks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({})
+                });
+
+                if (!response.ok) {
+                    const errText = await response.text();
+                    throw new Error(`Erreur serveur (${response.status}) : ${errText}`);
+                }
+
+                const result = await response.json();
+                state.blockedAnalysis = result;
+
+                // Prepend missing blocked suppliers to state.suppliers so table & counts reflect them
+                if (result.blocked_suppliers && Array.isArray(result.blocked_suppliers)) {
+                    result.blocked_suppliers.forEach(b => {
+                        const suppId = String(b.supplier_id).trim();
+                        const exists = state.suppliers.some(s => String(s.Supplier).trim() === suppId);
+                        if (!exists) {
+                            const reasons = b.blocked_reasons || [];
+                            state.suppliers.unshift({
+                                Supplier: suppId,
+                                SupplierName: b.supplier_name,
+                                CreationDate: '',
+                                PurchasingIsBlocked: reasons.includes('Purchasing'),
+                                PostingIsBlocked: reasons.includes('Posting'),
+                                PaymentIsBlockedForSupplier: reasons.includes('Payment')
+                            });
+                        }
+                    });
+                }
+
+                renderBlockedResults(result);
+                updateKPIs();
+                renderTable();
+
+            } catch (err) {
+                console.error('Error running blocked vendors analysis:', err);
+                blockedLoading.style.display = 'none';
+                blockedContent.style.display = 'block';
+                document.getElementById('blockedSummary').innerHTML = `
+                    <span style="color: var(--conf-high-text); font-weight:700;">❌ Échec de l'analyse des blocages :</span> ${escapeHtml(err.message)}
+                `;
+                document.getElementById('blockedTableBody').innerHTML = '';
+            } finally {
+                btnCheck.disabled = false;
+            }
+        }
+
+        // Render AI Results Section
+        function renderAIResults(analysis) {
+            const aiLoading = document.getElementById('aiLoading');
+            const aiContent = document.getElementById('aiContent');
+            const aiSummary = document.getElementById('aiSummary');
+            const aiGroupsGrid = document.getElementById('aiGroupsGrid');
+            const aiTimestamp = document.getElementById('aiTimestamp');
+
+            aiLoading.style.display = 'none';
+            aiContent.style.display = 'block';
+
+            const now = new Date();
+            aiTimestamp.textContent = `Analysé à ${now.toLocaleTimeString()}`;
+
+            const groupsCount = analysis.duplicate_groups ? analysis.duplicate_groups.length : 0;
+            const totalAnalyzed = analysis.total_suppliers_analyzed || state.suppliers.length;
+
+            aiSummary.innerHTML = `
+                <strong>Synthèse de l'Analyse IA :</strong> ${escapeHtml(analysis.summary || 'Analyse terminée.')}
+                <br><span style="font-size:12px; color:var(--sap-text-secondary);">Analyse effectuée sur <strong>${totalAnalyzed}</strong> fournisseurs real-time S/4HANA. <strong>${groupsCount}</strong> groupe(s) de doublons détecté(s).</span>
+            `;
+
+            if (!analysis.duplicate_groups || analysis.duplicate_groups.length === 0) {
+                aiGroupsGrid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        ✅ Aucun doublon détecté parmi les fournisseurs analysés.
+                    </div>
+                `;
+                return;
+            }
+
+            let groupsHtml = '';
+            analysis.duplicate_groups.forEach((group, index) => {
+                const conf = (group.confidence || 'Medium').toLowerCase();
+                let badgeClass = 'badge-medium';
+                if (conf === 'high') badgeClass = 'badge-high';
+                if (conf === 'low') badgeClass = 'badge-low';
+
+                const supplierPills = (group.supplier_ids || []).map(id => `
+                    <span class="supplier-pill">${escapeHtml(id)}</span>
+                `).join('');
+
+                groupsHtml += `
+                    <div class="group-card">
+                        <div class="group-card-header">
+                            <span class="group-name">Groupe Doublon #${index + 1}</span>
+                            <span class="badge ${badgeClass}">${escapeHtml(group.confidence || 'Medium')} Confidence</span>
+                        </div>
+                        <div>
+                            <div style="font-size:12px; color:var(--sap-text-secondary); margin-bottom:6px; font-weight:600;">Fournisseurs Concernés :</div>
+                            <div class="supplier-pills">${supplierPills}</div>
+                        </div>
+                        <div>
+                            <div style="font-size:12px; color:var(--sap-text-secondary); margin-bottom:4px; font-weight:600;">Motif de Similarité :</div>
+                            <div class="similarity-reason">${escapeHtml(group.similarity_reason || 'Incohérence ou similarité de nom détectée.')}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            aiGroupsGrid.innerHTML = groupsHtml;
+        }
+
+        // Render Blocked Vendors Risk Results Section
+        function renderBlockedResults(analysis) {
+            const blockedLoading = document.getElementById('blockedLoading');
+            const blockedContent = document.getElementById('blockedContent');
+            const blockedSummary = document.getElementById('blockedSummary');
+            const blockedTbody = document.getElementById('blockedTableBody');
+            const blockedTimestamp = document.getElementById('blockedTimestamp');
+
+            blockedLoading.style.display = 'none';
+            blockedContent.style.display = 'block';
+
+            const now = new Date();
+            blockedTimestamp.textContent = `Vérifié à ${now.toLocaleTimeString()}`;
+
+            const total = analysis.total_blocked || 0;
+
+            blockedSummary.innerHTML = `
+                <strong>Synthèse de l'Analyse des Blocages :</strong> ${escapeHtml(analysis.summary || 'Analyse terminée.')}
+                <br><span style="font-size:12px; color:var(--sap-text-secondary);">Filtrage direct sur les drapeaux SAP Master Data (PurchasingIsBlocked, PostingIsBlocked, PaymentIsBlockedForSupplier).</span>
+            `;
+
+            const list = analysis.blocked_suppliers || [];
+            if (list.length === 0) {
+                blockedTbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="empty-state">
+                            ✅ Aucun fournisseur n'a de blocage actif.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let html = '';
+            list.forEach(item => {
+                const suppId = escapeHtml(item.supplier_id);
+                const suppName = escapeHtml(item.supplier_name);
+                const reasons = (item.blocked_reasons || []).map(r => `<span class="badge badge-reason">🚫 ${escapeHtml(r)}</span>`).join(' ');
+
+                const isHigh = (item.risk_level || '').toLowerCase() === 'high';
+                const riskBadge = isHigh 
+                    ? `<span class="badge badge-high">⚠️ Risque Élevé (High)</span>`
+                    : `<span class="badge badge-medium">⚠️ Risque Moyen (Medium)</span>`;
+
+                html += `
+                    <tr>
+                        <td class="supplier-id-cell">${suppId}</td>
+                        <td style="font-weight: 500;">${suppName}</td>
+                        <td>${reasons || '—'}</td>
+                        <td>${riskBadge}</td>
+                    </tr>
+                `;
+            });
+
+            blockedTbody.innerHTML = html;
+        }
+
+        // Render Suppliers Main Table
+        function renderTable() {
+            const tbody = document.getElementById('suppliersTableBody');
+            const tableCount = document.getElementById('tableCount');
+
+            const filtered = state.suppliers.filter(s => {
+                const searchLower = state.filterText.toLowerCase();
+                const nameMatch = (s.SupplierName || s.SupplierFullName || '').toLowerCase().includes(searchLower);
+                const idMatch = String(s.Supplier || '').toLowerCase().includes(searchLower);
+                const matchesSearch = nameMatch || idMatch;
+
+                const isBlocked = isTruthy(s.PurchasingIsBlocked) || isTruthy(s.PostingIsBlocked) || isTruthy(s.PaymentIsBlockedForSupplier);
+                const isDuplicate = state.duplicateMap.has(String(s.Supplier).trim());
+
+                if (state.filterStatus === 'active') return matchesSearch && !isBlocked;
+                if (state.filterStatus === 'blocked') return matchesSearch && isBlocked;
+                if (state.filterStatus === 'duplicates') return matchesSearch && isDuplicate;
+
+                return matchesSearch;
+            });
+
+            tableCount.textContent = `${filtered.length} / ${state.suppliers.length} fournisseur(s) affiché(s)`;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="empty-state">
+                            Aucun fournisseur ne correspond aux critères de recherche.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let rowsHtml = '';
+            filtered.forEach(s => {
+                const suppId = String(s.Supplier).trim();
+                const name = s.SupplierName || s.SupplierFullName || '—';
+                const created = formatDate(s.CreationDate);
+                const isBlocked = isTruthy(s.PurchasingIsBlocked) || isTruthy(s.PostingIsBlocked) || isTruthy(s.PaymentIsBlockedForSupplier);
+
+                const dupInfo = state.duplicateMap.get(suppId);
+                let rowClass = '';
+                let dupBadge = '<span style="color: var(--sap-text-muted);">—</span>';
+
+                if (dupInfo) {
+                    const conf = (dupInfo.confidence || 'Medium').toLowerCase();
+                    if (conf === 'high') {
+                        rowClass = 'duplicate-row';
+                    } else if (conf === 'low') {
+                        rowClass = 'duplicate-row-low';
+                    } else {
+                        rowClass = 'duplicate-row-med';
+                    }
+
+                    let badgeClass = 'badge-medium';
+                    if (conf === 'high') badgeClass = 'badge-high';
+                    if (conf === 'low') badgeClass = 'badge-low';
+
+                    dupBadge = `
+                        <span class="badge ${badgeClass}">
+                            ⚠️ Groupe #${dupInfo.groupIdx} (${escapeHtml(dupInfo.confidence)})
+                        </span>
+                    `;
+                }
+
+                const statusBadge = isBlocked 
+                    ? `<span class="badge badge-blocked">🔒 Bloqué</span>` 
+                    : `<span class="badge badge-active">✅ Actif</span>`;
+
+                rowsHtml += `
+                    <tr class="${rowClass}">
+                        <td class="supplier-id-cell">${escapeHtml(suppId)}</td>
+                        <td style="font-weight: 500;">${escapeHtml(name)}</td>
+                        <td style="color: var(--sap-text-secondary); font-size:13px;">${escapeHtml(created)}</td>
+                        <td>${statusBadge}</td>
+                        <td>${dupBadge}</td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = rowsHtml;
+        }
+
+        // Filter Table Handler
+        function filterTable() {
+            state.filterText = document.getElementById('searchInput').value || '';
+            state.filterStatus = document.getElementById('statusFilter').value || 'all';
+            renderTable();
+        }
+
+        // Update KPI Counters
+        function updateKPIs() {
+            const total = state.suppliers.length;
+            
+            let blocked = 0;
+            if (state.blockedAnalysis && typeof state.blockedAnalysis.total_blocked === 'number') {
+                blocked = state.blockedAnalysis.total_blocked;
+            } else {
+                blocked = state.suppliers.filter(s => 
+                    isTruthy(s.PurchasingIsBlocked) || 
+                    isTruthy(s.PostingIsBlocked) || 
+                    isTruthy(s.PaymentIsBlockedForSupplier)
+                ).length;
+            }
+
+            const active = Math.max(0, total - blocked);
+            const duplicates = state.duplicateAnalysis?.duplicate_groups?.length ?? '0';
+
+            document.getElementById('kpiTotal').textContent = total;
+            document.getElementById('kpiActive').textContent = active;
+            document.getElementById('kpiBlocked').textContent = blocked;
+            document.getElementById('kpiDuplicates').textContent = duplicates;
+        }
+
+        // Helper: Format Date String
+        function formatDate(dateStr) {
+            if (!dateStr) return '—';
+            if (typeof dateStr === 'string' && dateStr.includes('/Date(')) {
+                const match = dateStr.match(/\/Date\((\d+)\)\//);
+                if (match) {
+                    const d = new Date(parseInt(match[1], 10));
+                    return d.toISOString().split('T')[0];
+                }
+            }
+            try {
+                const d = new Date(dateStr);
+                if (isNaN(d.getTime())) return dateStr;
+                return d.toISOString().split('T')[0];
+            } catch (e) {
+                return dateStr;
+            }
+        }
+
+        // Helper: Escape HTML
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
