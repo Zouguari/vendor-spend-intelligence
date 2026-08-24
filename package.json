@@ -1,0 +1,36 @@
+{
+  "name": "vendor-spend-intelligence",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vendor Spend Intelligence CAP service",
+  "main": "index.js",
+  "scripts": {
+    "start": "cds-serve"
+  },
+  "dependencies": {
+    "@cap-js-community/odata-v2-adapter": "^1.16.1",
+    "@sap-cloud-sdk/connectivity": "^4.8.0",
+    "@sap-cloud-sdk/http-client": "^4.8.0",
+    "@sap-cloud-sdk/resilience": "^4.8.0",
+    "@sap/cds": "^10",
+    "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^3"
+  },
+  "cds": {
+    "requires": {
+      "API_BUSINESS_PARTNER": {
+        "kind": "odata-v2",
+        "model": "srv/external/API_BUSINESS_PARTNER",
+        "csrf": true,
+        "credentials": {
+          "url": "https://my413615-api.s4hana.cloud.sap/sap/opu/odata/sap/API_BUSINESS_PARTNER",
+          "authentication": "BasicAuthentication",
+          "username": "{env:S4H_USERNAME}",
+          "password": "{env:S4H_PASSWORD}"
+        }
+      }
+    }
+  }
+}
