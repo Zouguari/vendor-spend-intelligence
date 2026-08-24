@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SAP Vendor Spend Intelligence - Governance & Risk Analysis</title>
-    <!-- Google Fonts: Inter & Roboto -->
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            /* SAP Fiori / Horizon Inspired Palette */
+            /* SAP Horizon / Fiori Theme Palette */
             --sap-brand: #0a6ed1;
             --sap-brand-dark: #0854a0;
             --sap-brand-light: #eef5fc;
-            --sap-header-bg: linear-gradient(135deg, #0a6ed1 0%, #1b365d 100%);
+            --sap-header-bg: linear-gradient(135deg, #0b3866 0%, #114b8c 50%, #0a6ed1 100%);
             --sap-bg: #f4f6f9;
             --sap-card-bg: #ffffff;
             --sap-text-primary: #1d2d3e;
@@ -37,17 +37,17 @@
             --conf-high-bg: #fdeded;
             --conf-high-text: #d32f2f;
             --conf-high-border: #f5c6cb;
-            --conf-high-tint: #fff4f4;
+            --conf-high-tint: #fff5f5;
 
             --conf-med-bg: #fff3e0;
             --conf-med-text: #e65100;
             --conf-med-border: #ffe0b2;
-            --conf-med-tint: #fff9f0;
+            --conf-med-tint: #fffaf2;
 
             --conf-low-bg: #fffde7;
             --conf-low-text: #f57f17;
             --conf-low-border: #fff9c4;
-            --conf-low-tint: #fffff2;
+            --conf-low-tint: #fffff4;
 
             /* Shadows & Border Radius */
             --radius-s: 4px;
@@ -55,7 +55,7 @@
             --radius-l: 12px;
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.14);
         }
 
         * {
@@ -65,7 +65,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--sap-bg);
             color: var(--sap-text-primary);
             line-height: 1.5;
@@ -78,14 +78,16 @@
         .shellbar {
             background: var(--sap-header-bg);
             color: #ffffff;
-            padding: 16px 32px;
+            padding: 14px 28px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             position: sticky;
             top: 0;
             z-index: 100;
+            flex-wrap: wrap;
+            gap: 14px;
         }
 
         .shellbar-brand {
@@ -95,36 +97,71 @@
         }
 
         .shellbar-logo {
-            width: 38px;
-            height: 38px;
+            width: 42px;
+            height: 42px;
             background: rgba(255, 255, 255, 0.15);
             border-radius: var(--radius-m);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
+            font-weight: 800;
+            font-size: 16px;
             letter-spacing: -0.5px;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(6px);
             border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
         .shellbar-title-group h1 {
-            font-size: 18px;
+            font-size: 19px;
             font-weight: 700;
-            letter-spacing: -0.2px;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .shellbar-title-group p {
             font-size: 12px;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.85);
             font-weight: 400;
+        }
+
+        /* Connection Badge */
+        .system-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(129, 199, 132, 0.5);
+            color: #e8f5e9;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        .pulse-dot {
+            width: 7px;
+            height: 7px;
+            background-color: #66bb6a;
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(102, 187, 106, 0.7);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(102, 187, 106, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(102, 187, 106, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(102, 187, 106, 0); }
         }
 
         .shellbar-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         /* Buttons */
@@ -133,8 +170,8 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 10px 18px;
-            font-size: 14px;
+            padding: 9px 16px;
+            font-size: 13px;
             font-weight: 600;
             border-radius: var(--radius-m);
             border: 1px solid transparent;
@@ -142,6 +179,7 @@
             transition: all 0.2s ease;
             outline: none;
             user-select: none;
+            white-space: nowrap;
         }
 
         .btn-ai {
@@ -180,6 +218,17 @@
             background: rgba(255, 255, 255, 0.25);
         }
 
+        .btn-outline {
+            background: #ffffff;
+            color: var(--sap-text-primary);
+            border: 1px solid var(--sap-border);
+        }
+
+        .btn-outline:hover:not(:disabled) {
+            background: #f8fafc;
+            border-color: var(--sap-text-secondary);
+        }
+
         .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
@@ -188,7 +237,7 @@
 
         /* Page Container */
         .container {
-            max-width: 1320px;
+            max-width: 1380px;
             width: 100%;
             margin: 0 auto;
             padding: 24px;
@@ -209,12 +258,14 @@
             background: var(--sap-card-bg);
             border: 1px solid var(--sap-border);
             border-radius: var(--radius-m);
-            padding: 16px 20px;
+            padding: 18px 20px;
             box-shadow: var(--shadow-sm);
             display: flex;
             flex-direction: column;
             gap: 6px;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .kpi-card:hover {
@@ -222,16 +273,34 @@
             transform: translateY(-2px);
         }
 
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--sap-brand);
+        }
+
+        .kpi-card.kpi-blocked::before {
+            background: #d32f2f;
+        }
+
+        .kpi-card.kpi-duplicates::before {
+            background: #e65100;
+        }
+
         .kpi-title {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--sap-text-secondary);
-            font-weight: 500;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .kpi-value {
-            font-size: 28px;
+            font-size: 30px;
             font-weight: 700;
             color: var(--sap-text-primary);
             line-height: 1.1;
@@ -240,6 +309,27 @@
         .kpi-sub {
             font-size: 12px;
             color: var(--sap-text-muted);
+        }
+
+        /* Error Alert Box */
+        .error-alert {
+            background-color: #fdeded;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 16px 20px;
+            border-radius: var(--radius-m);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .error-alert-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
         }
 
         /* Section Cards */
@@ -252,7 +342,7 @@
         }
 
         .card-header {
-            padding: 18px 24px;
+            padding: 16px 24px;
             border-bottom: 1px solid var(--sap-border-light);
             display: flex;
             align-items: center;
@@ -279,17 +369,18 @@
             align-items: center;
             justify-content: center;
             gap: 16px;
-            padding: 32px;
+            padding: 36px 24px;
             background: var(--sap-brand-light);
             border: 1px solid var(--sap-border);
             border-radius: var(--radius-m);
             color: var(--sap-brand);
             font-weight: 600;
+            font-size: 14px;
         }
 
         .spinner {
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             border: 3px solid rgba(10, 110, 209, 0.2);
             border-top-color: var(--sap-brand);
             border-radius: 50%;
@@ -362,6 +453,7 @@
             font-weight: 600;
             line-height: 1.2;
             border: 1px solid transparent;
+            white-space: nowrap;
         }
 
         .badge-high {
@@ -409,13 +501,20 @@
 
         .supplier-pill {
             background: #f1f5f9;
-            color: var(--sap-text-primary);
+            color: var(--sap-brand-dark);
             border: 1px solid var(--sap-border);
             padding: 4px 10px;
             border-radius: 6px;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             font-family: monospace;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .supplier-pill:hover {
+            background: var(--sap-brand-light);
+            border-color: var(--sap-brand);
         }
 
         .similarity-reason {
@@ -443,7 +542,8 @@
         .search-box {
             position: relative;
             flex: 1;
-            max-width: 360px;
+            max-width: 380px;
+            min-width: 240px;
         }
 
         .search-box input {
@@ -453,11 +553,12 @@
             border: 1px solid var(--sap-border);
             border-radius: var(--radius-m);
             outline: none;
-            transition: border-color 0.2s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .search-box input:focus {
             border-color: var(--sap-brand);
+            box-shadow: 0 0 0 3px rgba(10, 110, 209, 0.15);
         }
 
         .search-icon {
@@ -472,7 +573,7 @@
         .filter-group {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .select-input {
@@ -483,6 +584,7 @@
             outline: none;
             background-color: #ffffff;
             color: var(--sap-text-primary);
+            cursor: pointer;
         }
 
         /* Tables */
@@ -518,11 +620,12 @@
         }
 
         tbody tr {
-            transition: background-color 0.2s ease;
+            transition: background-color 0.15s ease;
         }
 
         tbody tr:hover {
             background-color: #f8fafc;
+            cursor: pointer;
         }
 
         /* Highlighting Duplicate Rows */
@@ -543,7 +646,7 @@
 
         .supplier-id-cell {
             font-family: monospace;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--sap-brand);
         }
 
@@ -552,6 +655,118 @@
             padding: 48px 24px;
             color: var(--sap-text-muted);
             font-size: 14px;
+        }
+
+        /* Supplier Detail Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: var(--radius-l);
+            max-width: 640px;
+            width: 100%;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: transform 0.25s ease;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            background: var(--sap-header-bg);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #ffffff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .detail-item {
+            background: #f8fafc;
+            padding: 12px 14px;
+            border-radius: var(--radius-m);
+            border: 1px solid var(--sap-border-light);
+        }
+
+        .detail-label {
+            font-size: 11px;
+            color: var(--sap-text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--sap-text-primary);
+            word-break: break-word;
         }
 
         /* Footer */
@@ -573,8 +788,14 @@
         <div class="shellbar-brand">
             <div class="shellbar-logo">SAP</div>
             <div class="shellbar-title-group">
-                <h1>Vendor Spend Intelligence</h1>
-                <p>Analyse IA des Doublons & Détection des Risques de Blocage</p>
+                <h1>
+                    Vendor Spend Intelligence
+                    <span class="system-badge">
+                        <span class="pulse-dot"></span>
+                        S/4HANA Cloud Live
+                    </span>
+                </h1>
+                <p>Analyse IA des Doublons & Détection des Risques de Blocage (API_BUSINESS_PARTNER)</p>
             </div>
         </div>
         <div class="shellbar-actions">
@@ -596,6 +817,15 @@
     <!-- Main Container -->
     <main class="container">
 
+        <!-- Global Error Banner (Hidden by default) -->
+        <div id="globalErrorAlert" class="error-alert" style="display: none;">
+            <div class="error-alert-content">
+                <span>⚠️</span>
+                <span id="globalErrorMessage">Erreur lors de la communication avec le backend.</span>
+            </div>
+            <button class="btn btn-outline" style="padding: 4px 12px; font-size:12px;" onclick="fetchSuppliers()">Réessayer</button>
+        </div>
+
         <!-- KPI Metrics Grid -->
         <section class="kpi-grid">
             <div class="kpi-card">
@@ -608,12 +838,12 @@
                 <span id="kpiActive" class="kpi-value">—</span>
                 <span class="kpi-sub">Statut non bloqué</span>
             </div>
-            <div class="kpi-card">
+            <div class="kpi-card kpi-blocked">
                 <span class="kpi-title">Fournisseurs Bloqués</span>
                 <span id="kpiBlocked" class="kpi-value">—</span>
                 <span class="kpi-sub">Achats/Paiements restreints</span>
             </div>
-            <div class="kpi-card">
+            <div class="kpi-card kpi-duplicates">
                 <span class="kpi-title">Groupes Doublons IA</span>
                 <span id="kpiDuplicates" class="kpi-value">—</span>
                 <span class="kpi-sub">Détectés par analyse Groq IA</span>
@@ -648,6 +878,7 @@
                                     <th>Nom du Fournisseur</th>
                                     <th>Motifs de Blocage (Restrictions)</th>
                                     <th>Niveau de Risque</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody id="blockedTableBody">
@@ -664,7 +895,7 @@
             <div class="card-header">
                 <div class="card-title">
                     <svg width="20" height="20" fill="none" stroke="var(--sap-brand)" stroke-width="2" viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
-                    Résultats de l'Analyse IA des Doublons
+                    Résultats de l'Analyse IA des Doublons (Groq LLM)
                 </div>
                 <span id="aiTimestamp" class="kpi-sub"></span>
             </div>
@@ -688,7 +919,7 @@
             <div class="card-header">
                 <div class="card-title">
                     <svg width="20" height="20" fill="none" stroke="var(--sap-brand)" stroke-width="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                    Liste des Fournisseurs
+                    Liste des Fournisseurs S/4HANA
                 </div>
                 <span id="tableCount" class="kpi-sub">Chargement...</span>
             </div>
@@ -697,10 +928,10 @@
                 <div class="table-toolbar">
                     <div class="search-box">
                         <span class="search-icon">🔍</span>
-                        <input type="text" id="searchInput" placeholder="Rechercher par Nom ou Supplier ID..." oninput="filterTable()">
+                        <input type="text" id="searchInput" placeholder="Rechercher par ID, Nom, Groupe..." oninput="filterTable()">
                     </div>
                     <div class="filter-group">
-                        <label for="statusFilter" class="kpi-sub" style="font-weight:600;">Filtrer :</label>
+                        <label for="statusFilter" class="kpi-sub" style="font-weight:600;">Filtrer par statut :</label>
                         <select id="statusFilter" class="select-input" onchange="filterTable()">
                             <option value="all">Tous les fournisseurs</option>
                             <option value="active">Actifs uniquement</option>
@@ -720,13 +951,14 @@
                                 <th>Date de Création</th>
                                 <th>Statut Bloqué</th>
                                 <th>Détection Doublon</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="suppliersTableBody">
                             <tr>
-                                <td colspan="5" class="empty-state">
+                                <td colspan="6" class="empty-state">
                                     <div class="spinner" style="margin: 0 auto 12px auto;"></div>
-                                    Chargement des fournisseurs S/4HANA...
+                                    Chargement des fournisseurs S/4HANA Cloud...
                                 </td>
                             </tr>
                         </tbody>
@@ -737,12 +969,25 @@
 
     </main>
 
+    <!-- Supplier Detail Modal -->
+    <div id="detailModal" class="modal-overlay" onclick="closeDetailModal(event)">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title" id="modalSupplierTitle">Détails du Fournisseur</div>
+                <button class="modal-close" onclick="closeDetailModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalSupplierBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
-        SAP Vendor Spend Intelligence &copy; 2026 — CAP S/4HANA Integration & Groq AI Governance
+        SAP Vendor Spend Intelligence &copy; 2026 — Integration S/4HANA Cloud OData V2 & Groq AI Master Data Governance
     </footer>
 
-    <!-- Vanilla JavaScript -->
+    <!-- Vanilla JavaScript Application Logic -->
     <script>
         // Global Application State
         const state = {
@@ -761,39 +1006,82 @@
             fetchSuppliers();
         });
 
-        // 1. Fetch Suppliers List from OData V4 Service
+        // 1. Parallel Fetch: Suppliers List + Auto Blocked Vendor Resolution
         async function fetchSuppliers() {
             const tbody = document.getElementById('suppliersTableBody');
             const btnRefresh = document.getElementById('btnRefresh');
+            const globalErrorAlert = document.getElementById('globalErrorAlert');
+            
             btnRefresh.disabled = true;
+            globalErrorAlert.style.display = 'none';
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        <div class="spinner" style="margin: 0 auto 12px auto;"></div>
+                        Chargement des données S/4HANA Cloud et analyse des règles de blocage...
+                    </td>
+                </tr>
+            `;
 
             try {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="empty-state">
-                            <div class="spinner" style="margin: 0 auto 12px auto;"></div>
-                            Chargement des données fournisseurs depuis /odata/v4/vendor-service/Suppliers...
-                        </td>
-                    </tr>
-                `;
+                // Run supplier fetch and blocked vendor detection in parallel
+                const [suppliersRes, blockedRes] = await Promise.allSettled([
+                    fetch('/odata/v4/vendor-service/Suppliers'),
+                    fetch('/odata/v4/vendor-service/detectBlockedVendorRisks', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({})
+                    })
+                ]);
 
-                const response = await fetch('/odata/v4/vendor-service/Suppliers');
-                if (!response.ok) {
-                    throw new Error(`HTTP Error ${response.status}: ${response.statusText}`);
+                if (suppliersRes.status === 'rejected' || !suppliersRes.value.ok) {
+                    const err = suppliersRes.reason || new Error(`HTTP Error ${suppliersRes.value?.status}`);
+                    throw err;
                 }
 
-                const data = await response.json();
-                state.suppliers = data.value || [];
+                const suppliersData = await suppliersRes.value.json();
+                state.suppliers = suppliersData.value || [];
+
+                // Process blocked analysis if successful
+                if (blockedRes.status === 'fulfilled' && blockedRes.value.ok) {
+                    const blockedData = await blockedRes.value.json();
+                    state.blockedAnalysis = blockedData;
+
+                    // Ensure blocked suppliers like TEST_BLKD are prepended if missing
+                    if (blockedData.blocked_suppliers && Array.isArray(blockedData.blocked_suppliers)) {
+                        blockedData.blocked_suppliers.forEach(b => {
+                            const suppId = String(b.supplier_id).trim();
+                            const exists = state.suppliers.some(s => String(s.Supplier).trim() === suppId);
+                            if (!exists) {
+                                const reasons = b.blocked_reasons || [];
+                                state.suppliers.unshift({
+                                    Supplier: suppId,
+                                    SupplierName: b.supplier_name,
+                                    SupplierFullName: b.supplier_name,
+                                    CreationDate: '',
+                                    PurchasingIsBlocked: reasons.includes('Purchasing'),
+                                    PostingIsBlocked: reasons.includes('Posting'),
+                                    PaymentIsBlockedForSupplier: reasons.includes('Payment')
+                                });
+                            }
+                        });
+                    }
+
+                    renderBlockedResults(blockedData);
+                    document.getElementById('blockedSection').style.display = 'block';
+                }
 
                 updateKPIs();
                 renderTable();
 
             } catch (err) {
                 console.error('Error fetching suppliers:', err);
+                showGlobalError(`Échec de connexion à SAP S/4HANA Cloud : ${err.message}`);
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="5" class="empty-state" style="color: var(--conf-high-text);">
-                            ❌ Erreur lors du chargement des fournisseurs : ${escapeHtml(err.message)}
+                        <td colspan="6" class="empty-state" style="color: var(--conf-high-text);">
+                            ❌ Impossible de charger les fournisseurs. Vérifiez que le serveur CAP est actif.
                         </td>
                     </tr>
                 `;
@@ -802,7 +1090,7 @@
             }
         }
 
-        // 2. Trigger AI Vendor Duplicate Analysis
+        // 2. Trigger AI Vendor Duplicate Analysis (Groq LLM)
         async function analyzeVendorDuplicates() {
             const btnAnalyze = document.getElementById('btnAnalyze');
             const aiSection = document.getElementById('aiSection');
@@ -863,7 +1151,7 @@
             }
         }
 
-        // 3. Trigger Blocked Vendor Risk Analysis (Rule-based Action)
+        // 3. Trigger Blocked Vendor Risk Analysis (Manual Refresh Button)
         async function detectBlockedVendorRisks() {
             const btnCheck = document.getElementById('btnCheckBlocked');
             const blockedSection = document.getElementById('blockedSection');
@@ -892,7 +1180,7 @@
                 const result = await response.json();
                 state.blockedAnalysis = result;
 
-                // Prepend missing blocked suppliers to state.suppliers so table & counts reflect them
+                // Prepend missing blocked suppliers to state.suppliers
                 if (result.blocked_suppliers && Array.isArray(result.blocked_suppliers)) {
                     result.blocked_suppliers.forEach(b => {
                         const suppId = String(b.supplier_id).trim();
@@ -902,6 +1190,7 @@
                             state.suppliers.unshift({
                                 Supplier: suppId,
                                 SupplierName: b.supplier_name,
+                                SupplierFullName: b.supplier_name,
                                 CreationDate: '',
                                 PurchasingIsBlocked: reasons.includes('Purchasing'),
                                 PostingIsBlocked: reasons.includes('Posting'),
@@ -946,7 +1235,7 @@
             const totalAnalyzed = analysis.total_suppliers_analyzed || state.suppliers.length;
 
             aiSummary.innerHTML = `
-                <strong>Synthèse de l'Analyse IA :</strong> ${escapeHtml(analysis.summary || 'Analyse terminée.')}
+                <strong>Synthèse de l'Analyse Groq AI :</strong> ${escapeHtml(analysis.summary || 'Analyse terminée.')}
                 <br><span style="font-size:12px; color:var(--sap-text-secondary);">Analyse effectuée sur <strong>${totalAnalyzed}</strong> fournisseurs real-time S/4HANA. <strong>${groupsCount}</strong> groupe(s) de doublons détecté(s).</span>
             `;
 
@@ -967,7 +1256,7 @@
                 if (conf === 'low') badgeClass = 'badge-low';
 
                 const supplierPills = (group.supplier_ids || []).map(id => `
-                    <span class="supplier-pill">${escapeHtml(id)}</span>
+                    <span class="supplier-pill" onclick="openSupplierDetail('${escapeHtml(id)}')">${escapeHtml(id)}</span>
                 `).join('');
 
                 groupsHtml += `
@@ -981,7 +1270,7 @@
                             <div class="supplier-pills">${supplierPills}</div>
                         </div>
                         <div>
-                            <div style="font-size:12px; color:var(--sap-text-secondary); margin-bottom:4px; font-weight:600;">Motif de Similarité :</div>
+                            <div style="font-size:12px; color:var(--sap-text-secondary); margin-bottom:4px; font-weight:600;">Motif de Similarité IA :</div>
                             <div class="similarity-reason">${escapeHtml(group.similarity_reason || 'Incohérence ou similarité de nom détectée.')}</div>
                         </div>
                     </div>
@@ -1016,8 +1305,8 @@
             if (list.length === 0) {
                 blockedTbody.innerHTML = `
                     <tr>
-                        <td colspan="4" class="empty-state">
-                            ✅ Aucun fournisseur n'a de blocage actif.
+                        <td colspan="5" class="empty-state">
+                            ✅ Aucun fournisseur n'a de blocage actif dans S/4HANA Cloud.
                         </td>
                     </tr>
                 `;
@@ -1036,11 +1325,14 @@
                     : `<span class="badge badge-medium">⚠️ Risque Moyen (Medium)</span>`;
 
                 html += `
-                    <tr>
+                    <tr onclick="openSupplierDetail('${suppId}')">
                         <td class="supplier-id-cell">${suppId}</td>
-                        <td style="font-weight: 500;">${suppName}</td>
+                        <td style="font-weight: 600;">${suppName}</td>
                         <td>${reasons || '—'}</td>
                         <td>${riskBadge}</td>
+                        <td>
+                            <button class="btn btn-outline" style="padding: 4px 10px; font-size:12px;" onclick="event.stopPropagation(); openSupplierDetail('${suppId}')">👁️ Détails</button>
+                        </td>
                     </tr>
                 `;
             });
@@ -1074,8 +1366,9 @@
             if (filtered.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="5" class="empty-state">
+                        <td colspan="6" class="empty-state">
                             Aucun fournisseur ne correspond aux critères de recherche.
+                            <br><button class="btn btn-outline" style="margin-top:12px;" onclick="resetFilters()">Effacer les filtres</button>
                         </td>
                     </tr>
                 `;
@@ -1119,12 +1412,15 @@
                     : `<span class="badge badge-active">✅ Actif</span>`;
 
                 rowsHtml += `
-                    <tr class="${rowClass}">
+                    <tr class="${rowClass}" onclick="openSupplierDetail('${escapeHtml(suppId)}')">
                         <td class="supplier-id-cell">${escapeHtml(suppId)}</td>
-                        <td style="font-weight: 500;">${escapeHtml(name)}</td>
+                        <td style="font-weight: 600;">${escapeHtml(name)}</td>
                         <td style="color: var(--sap-text-secondary); font-size:13px;">${escapeHtml(created)}</td>
                         <td>${statusBadge}</td>
                         <td>${dupBadge}</td>
+                        <td>
+                            <button class="btn btn-outline" style="padding: 4px 10px; font-size:12px;" onclick="event.stopPropagation(); openSupplierDetail('${escapeHtml(suppId)}')">👁️ Détails</button>
+                        </td>
                     </tr>
                 `;
             });
@@ -1132,10 +1428,114 @@
             tbody.innerHTML = rowsHtml;
         }
 
+        // Open Supplier Detail Modal
+        function openSupplierDetail(supplierId) {
+            const supplier = state.suppliers.find(s => String(s.Supplier).trim() === String(supplierId).trim());
+            const modal = document.getElementById('detailModal');
+            const title = document.getElementById('modalSupplierTitle');
+            const body = document.getElementById('modalSupplierBody');
+
+            if (!supplier) {
+                alert(`Fournisseur ${supplierId} non trouvé.`);
+                return;
+            }
+
+            title.textContent = `Fournisseur SAP : ${supplier.Supplier}`;
+            
+            const isBlockedPurchasing = isTruthy(supplier.PurchasingIsBlocked);
+            const isBlockedPosting = isTruthy(supplier.PostingIsBlocked);
+            const isBlockedPayment = isTruthy(supplier.PaymentIsBlockedForSupplier);
+            const isBlocked = isBlockedPurchasing || isBlockedPosting || isBlockedPayment;
+
+            const dupInfo = state.duplicateMap.get(String(supplier.Supplier).trim());
+
+            let blockReasonsHtml = '—';
+            if (isBlocked) {
+                const reasons = [];
+                if (isBlockedPurchasing) reasons.push('Blocage Achats (Purchasing)');
+                if (isBlockedPosting) reasons.push('Blocage Comptable (Posting)');
+                if (isBlockedPayment) reasons.push('Blocage Paiement (Payment)');
+                blockReasonsHtml = reasons.map(r => `<span class="badge badge-blocked" style="margin-right:4px;">🚫 ${r}</span>`).join('');
+            } else {
+                blockReasonsHtml = `<span class="badge badge-active">✅ Aucune restriction de blocage</span>`;
+            }
+
+            let dupHtml = '—';
+            if (dupInfo) {
+                dupHtml = `
+                    <div style="background: #fff8f6; padding: 12px; border-radius: var(--radius-m); border: 1px solid var(--conf-high-border);">
+                        <div style="font-weight:700; color:var(--conf-high-text); font-size:13px; margin-bottom:4px;">
+                            ⚠️ Flagué comme Doublon Potentiel (Groupe #${dupInfo.groupIdx})
+                        </div>
+                        <div style="font-size:12px; color:var(--sap-text-secondary);">
+                            <strong>Confiance IA :</strong> ${escapeHtml(dupInfo.confidence)}<br>
+                            <strong>Motif :</strong> ${escapeHtml(dupInfo.reason)}
+                        </div>
+                    </div>
+                `;
+            } else {
+                dupHtml = `<span class="badge badge-active">✅ Aucun doublon détecté par Groq AI</span>`;
+            }
+
+            body.innerHTML = `
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Supplier ID</div>
+                        <div class="detail-value" style="font-family:monospace; color:var(--sap-brand);">${escapeHtml(supplier.Supplier)}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Nom Officiel SAP</div>
+                        <div class="detail-value">${escapeHtml(supplier.SupplierName || supplier.SupplierFullName || '—')}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Groupe de Compte</div>
+                        <div class="detail-value">${escapeHtml(supplier.SupplierAccountGroup || 'SUPL')}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Date de Création</div>
+                        <div class="detail-value">${formatDate(supplier.CreationDate)}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Créé Par Utilisateur</div>
+                        <div class="detail-value">${escapeHtml(supplier.CreatedByUser || 'SAP_SYSTEM')}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Numéro de TVA (VAT)</div>
+                        <div class="detail-value">${escapeHtml(supplier.VATRegistration || '—')}</div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="detail-label" style="margin-bottom:6px;">Restrictions & Statut de Blocage S/4HANA</div>
+                    <div>${blockReasonsHtml}</div>
+                </div>
+
+                <div>
+                    <div class="detail-label" style="margin-bottom:6px;">Gouvernance Master Data (IA Groq)</div>
+                    <div>${dupHtml}</div>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        function closeDetailModal(e) {
+            if (e && e.target !== e.currentTarget && !e.target.classList.contains('modal-close')) return;
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
         // Filter Table Handler
         function filterTable() {
             state.filterText = document.getElementById('searchInput').value || '';
             state.filterStatus = document.getElementById('statusFilter').value || 'all';
+            renderTable();
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = 'all';
+            state.filterText = '';
+            state.filterStatus = 'all';
             renderTable();
         }
 
@@ -1161,6 +1561,13 @@
             document.getElementById('kpiActive').textContent = active;
             document.getElementById('kpiBlocked').textContent = blocked;
             document.getElementById('kpiDuplicates').textContent = duplicates;
+        }
+
+        function showGlobalError(message) {
+            const alertBox = document.getElementById('globalErrorAlert');
+            const alertMsg = document.getElementById('globalErrorMessage');
+            alertMsg.textContent = message;
+            alertBox.style.display = 'flex';
         }
 
         // Helper: Format Date String
