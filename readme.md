@@ -4,6 +4,7 @@
 
 ![SAP S/4HANA Cloud](https://img.shields.io/badge/SAP_S%2F4HANA_Cloud-Live_Integration-0A6ED1?style=for-the-badge&logo=sap)
 ![SAP BTP](https://img.shields.io/badge/SAP_BTP-Side_by_Side_Extension-0A6ED1?style=for-the-badge&logo=sap)
+![SAP BAS](https://img.shields.io/badge/SAP_BAS-Business_App_Studio-0070F3?style=for-the-badge&logo=sap)
 ![SAP CAP](https://img.shields.io/badge/SAP_CAP-Node.js-007ACC?style=for-the-badge&logo=node.js)
 ![OData V2/V4](https://img.shields.io/badge/OData-V2%20%2F%20V4-005A9C?style=for-the-badge)
 ![Groq AI](https://img.shields.io/badge/Groq_AI-LLM_Governance-f36c00?style=for-the-badge)
@@ -75,6 +76,7 @@ Large enterprise procurement teams often struggle with data quality issues in SA
 
 - **ERP Core**: SAP S/4HANA Cloud (`API_BUSINESS_PARTNER`)
 - **Cloud Platform**: SAP BTP (Side-by-Side Extensibility)
+- **IDE / Environment**: SAP Business Application Studio (BAS)
 - **Framework**: SAP CAP Node.js (`@sap/cds`, `@sap-cloud-sdk`)
 - **Protocols**: OData V2 (Consumption) / OData V4 (Exposition)
 - **AI Engine**: Groq LLM API (Multi-model parsing & confidence scoring)
@@ -121,6 +123,7 @@ Access the dashboard at `http://localhost:4004/dashboard/index.html`.
 ## What This Project Demonstrates
 
 - **SAP S/4HANA Cloud Integration**: Consumption of standard SAP OData V2 APIs using SAP Cloud SDK.
+- **SAP BTP & BAS Environment**: End-to-end cloud development workflow using SAP Business Application Studio.
 - **SAP BTP Side-by-Side Extensibility**: Building cloud extensions keeping ERP core clean.
 - **CAP Node.js & OData**: Mastering CAP service layers, projections, and custom handlers.
 - **AI-Powered Business Analysis**: Practical LLM integration for automated enterprise data governance.
